@@ -1,106 +1,105 @@
-class EmployeePayRollData{
+window.addEventListener('DOMContentLoaded', (event) =>{
+    const name = document.querySelector('#name');
+    const textError = document.querySelector('.text-error');
+    name.addEventListener('input', function() {
+    if(name.value.length == 0){
+        textError.textContent = "";
+        return;
+    } 
+    try{
+        (new EmployeePayRollData()).name = name.value;
+        textError.textContent = "";
+    }catch(e){
+        textError.textContent = e;
+    }
+});
+const salary = document.querySelector('#salary');
+const output = document.querySelector('.salary-output');
+output.textContent = salary.value;
+salary.addEventListener('input',function () {
+    output.textContent = salary.value; 
+});
+}); 
 
-    get id()
-    {
-        return this._id;
+
+const save = () => {
+    let employeePayrollData;
+    try{
+        employeePayrollData = createEmployeePayroll();
+        createAndUpdateStorage(employeePayrollData);
+    }catch(e){
+        return;
+    }
+}
+
+const createEmployeePayroll = () => {
+    let employeePayrollData = new EmployeePayRollData();
+    employeePayrollData.name = getInputValueById('#name');
+    employeePayrollData.profilePic = getSelectedValues('[name=profile]');
+    employeePayrollData.gender = getSelectedValues('[name=gender]');
+    employeePayrollData.department = getSelectedValues('[name=department]');
+    employeePayrollData.salary = getInputValueById('#salary');
+    employeePayrollData.note = getInputValueById('#notes');
+    let year = getInputValueById('#year');
+    let month = parseInt(getInputValueById('#month'))-1;
+    let day = getInputValueById('#day');
+    employeePayrollData.startDate = new Date(year,month,day);
+    alert(employeePayrollData.toString());
+    return employeePayrollData;
+}
+
+const getInputValueById = (id) => {
+    let value = document.querySelector(id).value;
+    return value;
+}
+
+const getSelectedValues = (propertyValue) => {
+    let allItems = document.querySelectorAll(propertyValue);
+    let selItems = [];
+    allItems.forEach(item => {
+        if(item.checked)
+        selItems.push(item.value);
+    });
+    return selItems;
+}
+
+
+function createAndUpdateStorage(employeePayrollData){
+    let employeePayrollList = JSON.parse(localStorage.getItem("employeePeyrollList"));
+
+    if(employeePayrollList != undefined){
+        employeePayrollList.push(employeePayrollData);
+    }
+    else{
+        employeePayrollList = [employeePayrollData];
     }
 
-    set id(id)
-    {
-        let idRegex = RegExp('[1-9]{1}[0-9]*');
-        if(idRegex.test(id))
-        this._id = id;
-        else
-        throw 'Id is incorrect';
-    }
+    alert(employeePayrollList.toString());
+    localStorage.setItem("employeePeyrollList",JSON.stringify(employeePayrollList));
+}
 
-    get name()
-    {
-        return this._name;
-    }
+const resetForm = () => {
+    setValue('#name',''); 
+    unsetSelectedValues('[name=profile]'); 
+    unsetSelectedValues('[name=gender]'); 
+    unsetSelectedValues('[name=department]'); 
+    setValue('#salary',''); 
+    setValue('#notes',''); 
+    setValue('#day','1'); 
+    setValue( '#month', 'January'); 
+    setValue('#year', '2020');}
 
-    set name(name)
-    {
-        let nameRegex = RegExp('^[A-Z]{1}[a-zA-Z\\s]{2,}$');
-        if(nameRegex.test(name))
-        this._name = name;
-        else 
-        throw 'Name is incorrect';
-    }
-
-    get profilePic()
-    {
-        return this._profilePic;
-    }
-
-    set profilePic(profilePic)
-    {
-        this._profilePic = profilePic;
-    }
-
-    get gender()
-    {
-        return this._gender;
-    }
-
-    set gender(gender)
-    {
-        this._gender = gender;
-    }
-
-    get department()
-    {
-        return this._department;
-    }
-
-    set department(department)
-    {
-        this._department = department;
-    }
-
-    get salary()
-    {
-        return this._salary;
-    }
-
-    set salary(salary)
-    {
-        this._salary = salary;
-    }
-
-    get note()
-    {
-        return this._note;
-    }
-
-    set note(note)
-    {
-        this._note = note;
-    }
-
-    get startDate()
-    {
-        return this._startDate;
-    }
-
-    set startDate(startDate)
-    {
-        let datee = new Date();
-        if(startDate<=datee)
-        {
-        this._startDate = startDate;
-        }
-        else
-        throw 'StartDate is incorrect';
-    }
-
-    toString()
-    {
-        const format = {year:'numeric', month:'long', day:'numeric'};
-        const date = this.startDate === undefined ? "undefined" :
-                     this.startDate.toLocaleDateString("en-US",format);
-        return "Id = "+this.id+", Name = "+this.name+", Gender = "+this.gender+", ProfilePic = "+this.profilePic+", Department = "+this.department+", Salary = "+this.salary+
-                ", StartDate = "+date+", Note = "+this.note;
-    }
-
+const unsetSelectedValues = (propertyValue) => {
+    let allItems = document.querySelectorall(propertyValue); 
+    allItems.forEach(item => {
+    item. checked = false; 
+    });
+}
+const setTextValue = (id, value) => {
+    const element = document.querySelector(id); 
+    element. textContent = value;
+}
+const setValue = (id, value) => {
+    const element = document.querySelector(id);
+    element.value = value;
 }
