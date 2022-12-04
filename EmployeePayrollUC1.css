@@ -32,7 +32,7 @@ body{
     font:normal normal bold 20px/25px Montserrat;
     font-family: "Montserrat", sans-serif;
     letter-spacing: 0px;
-    color: #82a70c;
+    color: #1bb8ab;
     text-transform: capitalize;
 }
 .emp-payroll{
@@ -49,6 +49,7 @@ body{
     align-items: center;
     border: 0px solid green;
 }
+
 
 .form{
     width: 65%;
