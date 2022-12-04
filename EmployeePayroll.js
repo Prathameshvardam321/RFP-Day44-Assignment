@@ -91,7 +91,7 @@ class EmployeePayRollData{
         this._startDate = startDate;
         }
         else
-        throw 'StratDate is incorrect';
+        throw 'StartDate is incorrect';
     }
 
     toString()
